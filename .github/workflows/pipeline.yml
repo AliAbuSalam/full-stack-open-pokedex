@@ -46,9 +46,6 @@ jobs:
     if: ${{ github.event_name == 'push' }}
     runs-on: ubuntu-20.04
     steps:
-        env:
-          $COMMIT_MESSAGES: ${{ github.event.commits.*.name }}
-        run: 'echo $COMMIT_MESSAGES'
       - uses: actions/checkout@v2
         with:
           fetch-depth: '0'
