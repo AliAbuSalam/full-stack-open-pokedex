@@ -43,8 +43,10 @@ jobs:
           
   tag_release:
     needs: [simple_deployment_pipeline]
+    env:
+      COMMIT_MESSAGES: ${{ toJson(github.event.commits.*.message )}}
     if: ${{ github.event_name == 'push' }}
-    if: ${{ !contains(join(toJson(github.event.commits.*.message)), '#skip') }}
+    if: ${{ !contains(join($COMMIT_MESSAGES), '#skip') }}
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
