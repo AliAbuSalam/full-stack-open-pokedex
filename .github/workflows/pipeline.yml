@@ -42,7 +42,7 @@ jobs:
           rollbackonhealthcheckfailed: true
       - name: build failed notification
         uses: rjstone/discord-webhook-notify@v1
-        if: ${{ failed() }}
+        if: ${{ failure() }}
         with: 
           severity: error
           details: Test failed.
