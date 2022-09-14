@@ -45,14 +45,14 @@ jobs:
         if: ${{ failure() }}
         with: 
           severity: error
-          details: Test failed.
+          description: commit\n ${{ github.context.payload.head_commit.url}} by aas broke the build.
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
       - name: build success notification
         uses: rjstone/discord-webhook-notify@v1
         if: ${{ success() }}
         with:
           severity: info
-          details: Test succeeded.
+          description: to https://fsopokedexaas.herokuapp.com by As
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
         
           
