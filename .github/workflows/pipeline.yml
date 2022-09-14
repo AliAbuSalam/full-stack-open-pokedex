@@ -45,9 +45,11 @@ jobs:
       - name: build failed notification
         uses: rjstone/discord-webhook-notify@v1
         if: ${{ failure() }}
+        env:
+          COMMIT_URL: ${{ github.context.payload.head_commit.url }}
         with: 
           severity: error
-          description: commit \n ${{ github.context.payload.head_commit.url }} by As broke the build.
+          description: commit \n ${{ COMMIT_URL }} by As broke the build.
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
       - name: build success notification
         uses: rjstone/discord-webhook-notify@v1
