@@ -12,7 +12,7 @@ jobs:
   simple_deployment_pipeline:
     runs-on: ubuntu-20.04
     env:
-      GITHUB_EVENT: ${{ toJson(github.event.payload) }}
+      GITHUB_EVENT: ${{ toJson(github.context.payload) }}
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v2
@@ -20,7 +20,7 @@ jobs:
           node-version: '16'
       - name: npm install
         run: npm install
-      - name: logging github.event.payload
+      - name: logging github.context.payload
         run: |
           echo "$GITHUB_EVENT"
       - name: trying to fail
@@ -52,7 +52,7 @@ jobs:
         if: ${{ failure() }}
         with: 
           severity: error
-          description: commit ${{ github.event.payload.head_commit.url }} by As broke the build.
+          description: commit ${{ github.context.payload.head_commit.url }} by As broke the build.
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
       - name: build success notification
         uses: rjstone/discord-webhook-notify@v1
