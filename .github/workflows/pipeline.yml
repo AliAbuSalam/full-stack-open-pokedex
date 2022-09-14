@@ -44,9 +44,9 @@ jobs:
           rollbackonhealthcheckfailed: true
       - name: build failed notification
         uses: rjstone/discord-webhook-notify@v1
-        if: ${{ failure() }}
         env:
           COMMIT_URL: ${{ github.context.payload.head_commit.url }}
+        if: ${{ failure() }}
         with: 
           severity: error
           description: commit \n ${{ COMMIT_URL }} by As broke the build.
