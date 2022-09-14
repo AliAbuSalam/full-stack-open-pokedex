@@ -22,7 +22,7 @@ jobs:
         run: npm install
       - name: logging github.event
         run: |
-          echo "${{ GITHUB_EVENT }}"
+          echo "$GITHUB_EVENT"
       - name: trying to fail
         run: exit 1          
       - name: lint
