@@ -11,8 +11,6 @@ on:
 jobs:
   simple_deployment_pipeline:
     runs-on: ubuntu-20.04
-    env:
-      GITHUB_EVENT: ${{ toJson(github.event.head_commit) }}
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v2
@@ -20,9 +18,9 @@ jobs:
           node-version: '16'
       - name: npm install
         run: npm install
-      - name: logging github.event.head_commit
+      - name: logging github.repository_owner
         run: |
-          echo "$GITHUB_EVENT"
+          echo ${{ github.repository_owner }}
       - name: trying to fail
         run: exit 1          
       - name: lint
