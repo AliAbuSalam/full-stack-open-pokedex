@@ -12,7 +12,7 @@ jobs:
   simple_deployment_pipeline:
     runs-on: ubuntu-20.04
     env:
-      GITHUB_EVENT: ${{ toJson(github.context) }}
+      GITHUB_EVENT: ${{ toJson(github.event.head_commit) }}
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v2
@@ -20,7 +20,7 @@ jobs:
           node-version: '16'
       - name: npm install
         run: npm install
-      - name: logging github.context.payload
+      - name: logging github.event.head_commit
         run: |
           echo "$GITHUB_EVENT"
       - name: trying to fail
