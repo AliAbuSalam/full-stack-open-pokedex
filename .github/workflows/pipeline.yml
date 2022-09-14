@@ -18,6 +18,13 @@ jobs:
           node-version: '16'
       - name: npm install
         run: npm install
+      - name: logging github.repository_owner
+        if: ${{ github.event_name == 'push' }}
+        run: |
+          echo ${{ github.event.head_commit.url }}
+      - name: trying to fail
+        if: ${{ github.event_name == 'push' }}
+        run: exit 1          
       - name: lint
         run: npm run eslint
       - name: build
@@ -40,6 +47,22 @@ jobs:
           checkstring: "ok"
           delay: 5
           rollbackonhealthcheckfailed: true
+      - name: build failed notification
+        uses: rjstone/discord-webhook-notify@v1
+        if: ${{ github.event_name == 'push' && failure() }}
+        with: 
+          severity: error
+          description: commit 
+          details: ${{ github.event.head_commit.url }} by As broke the build.
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+      - name: build success notification
+        uses: rjstone/discord-webhook-notify@v1
+        if: ${{ github.event_name == 'push' && success() }}
+        with:
+          severity: info
+          description: to https://fsopokedexaas.herokuapp.com by As
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+        
           
   tag_release:
     needs: [simple_deployment_pipeline]
@@ -51,7 +74,7 @@ jobs:
         with:
           fetch-depth: '0'
       - name: Bump version and push tag
-        uses: anothrNick/github-tag-action@1.36.0
+        uses: anothrNick/github-tag-action@eca2b69f9e2c24be7decccd0f15fdb1ea5906598
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DEFAULT_BUMP: 'patch'
