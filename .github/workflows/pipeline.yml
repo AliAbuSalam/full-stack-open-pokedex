@@ -52,6 +52,7 @@ jobs:
         if: ${{ github.event_name == 'push' && failure() }}
         with: 
           severity: error
+          text: Build failed
           description: commit 
           details: ${{ github.event.head_commit.url }} by As broke the build.
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
@@ -60,6 +61,7 @@ jobs:
         if: ${{ github.event_name == 'push' && success() }}
         with:
           severity: info
+          text: A new version of Pokedex deployed
           description: to https://fsopokedexaas.herokuapp.com by As
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
         
