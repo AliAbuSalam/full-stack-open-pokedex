@@ -18,6 +18,8 @@ jobs:
           node-version: '16'
       - name: npm install
         run: npm install
+      - name: try to fail
+        run: exit 1
       - name: lint
         run: npm run eslint
       - name: build
@@ -29,8 +31,6 @@ jobs:
         with:
           start: npm run start-prod
           wait-on: http://localhost:5000
-      - name: try to fail
-        run: exit 1
       - name: heroku deploy
         if: ${{ github.event_name == 'push' }}
         uses: akhileshns/heroku-deploy@v3.12.12
@@ -47,7 +47,7 @@ jobs:
         if: ${{ failure() }}
         with: 
           severity: error
-          description: commit\n ${{ github.context.payload.head_commit.url}} by As broke the build.
+          description: commit \n ${{ github.context.payload.head_commit.url }} by As broke the build.
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
       - name: build success notification
         uses: rjstone/discord-webhook-notify@v1
