@@ -18,10 +18,13 @@ jobs:
           node-version: '16'
       - name: npm install
         run: npm install
-      - name: try to fail
-        run:
-          echo ${{ github.event }} 
-          exit 1
+      - name: logging github.event
+        env: 
+          GITHUB_EVENT: ${{ toJson(github.event) }}
+        run: |
+          echo ${{ GITHUB_EVENT }}
+      - name: trying to fail
+        run: exit 1          
       - name: lint
         run: npm run eslint
       - name: build
@@ -49,7 +52,7 @@ jobs:
         if: ${{ failure() }}
         with: 
           severity: error
-          description: commit \n ${{ github.context.payload.head_commit.url }} by As broke the build.
+          description: commit \n ${{ github.event.payload.head_commit.url }} by As broke the build.
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
       - name: build success notification
         uses: rjstone/discord-webhook-notify@v1
