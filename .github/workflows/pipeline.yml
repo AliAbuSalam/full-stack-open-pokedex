@@ -11,6 +11,8 @@ on:
 jobs:
   simple_deployment_pipeline:
     runs-on: ubuntu-20.04
+    env:
+      GITHUB_EVENT: ${{ toJson(github.event) }}
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v2
@@ -19,8 +21,6 @@ jobs:
       - name: npm install
         run: npm install
       - name: logging github.event
-        env: 
-          GITHUB_EVENT: ${{ toJson(github.event) }}
         run: |
           echo "${{ GITHUB_EVENT }}"
       - name: trying to fail
