@@ -21,10 +21,7 @@ jobs:
       - name: logging github.repository_owner
         if: ${{ github.event_name == 'push' }}
         run: |
-          echo ${{ github.event.head_commit.url }}
-      - name: trying to fail
-        if: ${{ github.event_name == 'push' }}
-        run: exit 1          
+          echo ${{ github.event.head_commit.url }}        
       - name: lint
         run: npm run eslint
       - name: build
