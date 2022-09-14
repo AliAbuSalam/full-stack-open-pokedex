@@ -19,7 +19,9 @@ jobs:
       - name: npm install
         run: npm install
       - name: try to fail
-        run: exit 1
+        run:
+          echo ${{ github.event }} 
+          exit 1
       - name: lint
         run: npm run eslint
       - name: build
@@ -44,12 +46,10 @@ jobs:
           rollbackonhealthcheckfailed: true
       - name: build failed notification
         uses: rjstone/discord-webhook-notify@v1
-        env:
-          COMMIT_URL: ${{ github.context.payload.head_commit.url }}
         if: ${{ failure() }}
         with: 
           severity: error
-          description: commit \n ${{ COMMIT_URL }} by As broke the build.
+          description: commit \n ${{ github.context.payload.head_commit.url }} by As broke the build.
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
       - name: build success notification
         uses: rjstone/discord-webhook-notify@v1
